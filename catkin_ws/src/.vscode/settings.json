@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "iterator": "cpp",
+        "cmath": "cpp",
+        "unordered_map": "cpp",
+        "*.ipp": "cpp",
+        "functional": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp",
+        "deque": "cpp",
+        "vector": "cpp",
+        "list": "cpp",
+        "slist": "cpp",
+        "initializer_list": "cpp"
+    }
+}

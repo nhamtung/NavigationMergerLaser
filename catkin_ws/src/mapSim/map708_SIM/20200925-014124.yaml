@@ -1,0 +1,6 @@
+image: 20200925-014124.png
+resolution: 0.1
+origin: [-0.55, -2.25, 0.0]
+negate: 0
+occupied_thresh: 0.55
+free_thresh: 0.45
