@@ -18,6 +18,8 @@ sick_lidar_localization:
     point_cloud_frame_id: "pointcloud_sick_lidar_localization"                 # ros frame id of PointCloud2 messages
     tf_parent_frame_id: "tf_demo_map"                                          # parent frame of tf messages of of vehicles pose (typically frame of the loaded map)
     tf_child_frame_id: "tf_sick_lidar_localization"                            # child frame of tf messages of of vehicles pose
+    # tf_parent_frame_id: "map"                                          # parent frame of tf messages of of vehicles pose (typically frame of the loaded map)
+    # tf_child_frame_id: "odom"                            # child frame of tf messages of of vehicles pose
 
   # Configuration for time sync service
   time_sync:

@@ -108,8 +108,8 @@ LaserScanMatcher::LaserScanMatcher(ros::NodeHandle nh, ros::NodeHandle nh_privat
   //     "scan", 1, &LaserScanMatcher::scanCallback, this);
   // }
 
-  scan_subscriber_ = nh_.subscribe("/sick_safetyscanners/scan_multi", 1, &LaserScanMatcher::scanCallback, this);
-  // scan_subscriber_ = nh_.subscribe("/sick_safetyscanners_front/scan", 1, &LaserScanMatcher::scanCallback, this);
+  // scan_subscriber_ = nh_.subscribe("/sick_safetyscanners/scan_multi", 1, &LaserScanMatcher::scanCallback, this);
+  scan_subscriber_ = nh_.subscribe("/sick_safetyscanners_front/scan", 1, &LaserScanMatcher::scanCallback, this);
   // scan_subscriber_ = nh_.subscribe("/sick_safetyscanners_back/scan", 1, &LaserScanMatcher::scanCallback, this);
 
   if (use_imu_)
@@ -621,7 +621,7 @@ void LaserScanMatcher::processScan(LDP& curr_ldp_scan, const ros::Time& time)
   else
   {
     corr_ch.setIdentity();
-    ROS_WARN("laser_scan_matcher.cpp-622-Error in scan matching");
+    ROS_ERROR("laser_scan_matcher.cpp-622-Error in scan matching");
   }
 
   // **** swap old and new

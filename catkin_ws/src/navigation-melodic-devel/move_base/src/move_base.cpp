@@ -867,7 +867,7 @@ namespace move_base {
 
   // Add by TungNV   ////////////////////////////////////////////////////////////////////////////////////////////////////
   void MoveBase::getCurrentPose(const sick_lidar_localization::SickLocResultPortTelegramMsg::ConstPtr& msgPose){
-    // ROS_INFO("move_base.cpp-856-getCurrentPose");
+    ROS_INFO("move_base.cpp-856-getCurrentPose");
     robot_current_pose.header = msgPose->header;
     float x = msgPose->telegram_payload.PoseX;
     float y = msgPose->telegram_payload.PoseY;
@@ -1564,44 +1564,49 @@ namespace move_base {
   bool MoveBase::getRobotPose(geometry_msgs::PoseStamped& global_pose, costmap_2d::Costmap2DROS* costmap)
   {
     ROS_INFO("move_base.cpp-1517-getRobotPose");
-    // global_pose = robot_current_pose;
+    global_pose = robot_current_pose;
+    ROS_INFO("costmap_2d_ros.cpp-596-global_pose.x: %.3f", global_pose.pose.position.x);
+    ROS_INFO("costmap_2d_ros.cpp-597-global_pose.y: %.3f", global_pose.pose.position.y);
+    ROS_INFO("costmap_2d_ros.cpp-598-global_pose.z: %.3f", global_pose.pose.orientation.z);
+    ROS_INFO("costmap_2d_ros.cpp-599-global_pose.w: %.3f", global_pose.pose.orientation.w);
 
-    tf2::toMsg(tf2::Transform::getIdentity(), global_pose.pose);
-    geometry_msgs::PoseStamped robot_pose;
-    tf2::toMsg(tf2::Transform::getIdentity(), robot_pose.pose);
-    robot_pose.header.frame_id = robot_base_frame_;
-    robot_pose.header.stamp = ros::Time(); // latest available
-    ros::Time current_time = ros::Time::now();  // save time for checking tf delay later
 
-    // get robot pose on the given costmap frame
-    try
-    {
-      tf_.transform(robot_pose, global_pose, costmap->getGlobalFrameID());
-    }
-    catch (tf2::LookupException& ex)
-    {
-      ROS_ERROR_THROTTLE(1.0, "No Transform available Error looking up robot pose: %s\n", ex.what());
-      return false;
-    }
-    catch (tf2::ConnectivityException& ex)
-    {
-      ROS_ERROR_THROTTLE(1.0, "Connectivity Error looking up robot pose: %s\n", ex.what());
-      return false;
-    }
-    catch (tf2::ExtrapolationException& ex)
-    {
-      ROS_ERROR_THROTTLE(1.0, "Extrapolation Error looking up robot pose: %s\n", ex.what());
-      return false;
-    }
+    // tf2::toMsg(tf2::Transform::getIdentity(), global_pose.pose);
+    // geometry_msgs::PoseStamped robot_pose;
+    // tf2::toMsg(tf2::Transform::getIdentity(), robot_pose.pose);
+    // robot_pose.header.frame_id = robot_base_frame_;
+    // robot_pose.header.stamp = ros::Time(); // latest available
+    // ros::Time current_time = ros::Time::now();  // save time for checking tf delay later
 
-    // check if global_pose time stamp is within costmap transform tolerance
-    if (current_time.toSec() - global_pose.header.stamp.toSec() > costmap->getTransformTolerance())
-    {
-      ROS_WARN_THROTTLE(1.0, "Transform timeout for %s. " \
-                        "Current time: %.4f, pose stamp: %.4f, tolerance: %.4f", costmap->getName().c_str(),
-                        current_time.toSec(), global_pose.header.stamp.toSec(), costmap->getTransformTolerance());
-      return false;
-    }
+    // // get robot pose on the given costmap frame
+    // try
+    // {
+    //   tf_.transform(robot_pose, global_pose, costmap->getGlobalFrameID());
+    // }
+    // catch (tf2::LookupException& ex)
+    // {
+    //   ROS_ERROR_THROTTLE(1.0, "No Transform available Error looking up robot pose: %s\n", ex.what());
+    //   return false;
+    // }
+    // catch (tf2::ConnectivityException& ex)
+    // {
+    //   ROS_ERROR_THROTTLE(1.0, "Connectivity Error looking up robot pose: %s\n", ex.what());
+    //   return false;
+    // }
+    // catch (tf2::ExtrapolationException& ex)
+    // {
+    //   ROS_ERROR_THROTTLE(1.0, "Extrapolation Error looking up robot pose: %s\n", ex.what());
+    //   return false;
+    // }
+
+    // // check if global_pose time stamp is within costmap transform tolerance
+    // if (current_time.toSec() - global_pose.header.stamp.toSec() > costmap->getTransformTolerance())
+    // {
+    //   ROS_WARN_THROTTLE(1.0, "Transform timeout for %s. " \
+    //                     "Current time: %.4f, pose stamp: %.4f, tolerance: %.4f", costmap->getName().c_str(),
+    //                     current_time.toSec(), global_pose.header.stamp.toSec(), costmap->getTransformTolerance());
+    //   return false;
+    // }
 
     return true;
   }

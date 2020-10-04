@@ -1,0 +1,8 @@
+prefix=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/install
+
+Name: sick_lidar_localization
+Description: Description of sick_lidar_localization
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lsick_localization_lib
+Requires: message_runtime roscpp rospy geometry_msgs sensor_msgs std_msgs

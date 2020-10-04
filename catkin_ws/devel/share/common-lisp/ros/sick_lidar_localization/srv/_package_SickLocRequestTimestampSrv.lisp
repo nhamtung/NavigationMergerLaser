@@ -1,0 +1,16 @@
+(cl:in-package sick_lidar_localization-srv)
+(cl:export '(TIMESTAMP_LIDAR_MS-VAL
+          TIMESTAMP_LIDAR_MS
+          MEAN_TIME_VEHICLE_MS-VAL
+          MEAN_TIME_VEHICLE_MS
+          DELTA_TIME_MS-VAL
+          DELTA_TIME_MS
+          SEND_TIME_VEHICLE_SEC-VAL
+          SEND_TIME_VEHICLE_SEC
+          SEND_TIME_VEHICLE_NSEC-VAL
+          SEND_TIME_VEHICLE_NSEC
+          RECEIVE_TIME_VEHICLE_SEC-VAL
+          RECEIVE_TIME_VEHICLE_SEC
+          RECEIVE_TIME_VEHICLE_NSEC-VAL
+          RECEIVE_TIME_VEHICLE_NSEC
+))

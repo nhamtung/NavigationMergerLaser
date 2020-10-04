@@ -640,48 +640,50 @@ double Costmap2DROS::DegreeToRad (double angle){
 }
 bool Costmap2DROS::getRobotPose(geometry_msgs::PoseStamped& global_pose) const
 {
-  // ROS_INFO("costmap_2d_ros.cpp-641-getRobotPose");
-  // global_pose = robot_current_pose;
+  // ROS_INFO("costmap_2d_ros.cpp-641-");
+
+  global_pose = robot_current_pose;
   // ROS_INFO("costmap_2d_ros.cpp-596-global_pose.x: %.3f", global_pose.pose.position.x);
   // ROS_INFO("costmap_2d_ros.cpp-597-global_pose.y: %.3f", global_pose.pose.position.y);
   // ROS_INFO("costmap_2d_ros.cpp-598-global_pose.z: %.3f", global_pose.pose.orientation.z);
   // ROS_INFO("costmap_2d_ros.cpp-599-global_pose.w: %.3f", global_pose.pose.orientation.w);
 
-  tf2::toMsg(tf2::Transform::getIdentity(), global_pose.pose);
-  geometry_msgs::PoseStamped robot_pose;
-  tf2::toMsg(tf2::Transform::getIdentity(), robot_pose.pose);
-  robot_pose.header.frame_id = robot_base_frame_;
-  robot_pose.header.stamp = ros::Time();
-  ros::Time current_time = ros::Time::now();  // save time for checking tf delay later
+  // tf2::toMsg(tf2::Transform::getIdentity(), global_pose.pose);
+  // geometry_msgs::PoseStamped robot_pose;
+  // tf2::toMsg(tf2::Transform::getIdentity(), robot_pose.pose);
+  // robot_pose.header.frame_id = robot_base_frame_;
+  // robot_pose.header.stamp = ros::Time();
+  // ros::Time current_time = ros::Time::now();  // save time for checking tf delay later
 
-  // get the global pose of the robot
-  try
-  {
-    tf_.transform(robot_pose, global_pose, global_frame_);
-  }
-  catch (tf2::LookupException& ex)
-  {
-    ROS_ERROR_THROTTLE(1.0, "costmap_2d_ros.cpp-664-No Transform available Error looking up robot pose: %s\n", ex.what());
-    return false;
-  }
-  catch (tf2::ConnectivityException& ex)
-  {
-    ROS_ERROR_THROTTLE(1.0, "costmap_2d_ros.cpp-669-Connectivity Error looking up robot pose: %s\n", ex.what());
-    return false;
-  }
-  catch (tf2::ExtrapolationException& ex)
-  {
-    ROS_ERROR_THROTTLE(1.0, "costmap_2d_ros.cpp-674-Extrapolation Error looking up robot pose: %s\n", ex.what());
-    return false;
-  }
-  // check global_pose timeout
-  if (current_time.toSec() - global_pose.header.stamp.toSec() > transform_tolerance_)
-  {
-    ROS_WARN_THROTTLE(1.0,
-                      "Costmap2DROS transform timeout. Current time: %.4f, global_pose stamp: %.4f, tolerance: %.4f",
-                      current_time.toSec(), global_pose.header.stamp.toSec(), transform_tolerance_);
-    return false;
-  }
+  // // get the global pose of the robot
+  // try
+  // {
+  //   tf_.transform(robot_pose, global_pose, global_frame_);
+  // }
+  // catch (tf2::LookupException& ex)
+  // {
+  //   ROS_ERROR_THROTTLE(1.0, "costmap_2d_ros.cpp-664-No Transform available Error looking up robot pose: %s\n", ex.what());
+  //   return false;
+  // }
+  // catch (tf2::ConnectivityException& ex)
+  // {
+  //   ROS_ERROR_THROTTLE(1.0, "costmap_2d_ros.cpp-669-Connectivity Error looking up robot pose: %s\n", ex.what());
+  //   return false;
+  // }
+  // catch (tf2::ExtrapolationException& ex)
+  // {
+  //   ROS_ERROR_THROTTLE(1.0, "costmap_2d_ros.cpp-674-Extrapolation Error looking up robot pose: %s\n", ex.what());
+  //   return false;
+  // }
+  // // check global_pose timeout
+  // if (current_time.toSec() - global_pose.header.stamp.toSec() > transform_tolerance_)
+  // {
+  //   ROS_WARN_THROTTLE(1.0,
+  //                     "Costmap2DROS transform timeout. Current time: %.4f, global_pose stamp: %.4f, tolerance: %.4f",
+  //                     current_time.toSec(), global_pose.header.stamp.toSec(), transform_tolerance_);
+  //   return false;
+  // }
+
   // ROS_INFO("costmap_2d_ros.cpp-685-global_pose.x: %.3f", global_pose.pose.position.x);
   // ROS_INFO("costmap_2d_ros.cpp-686-global_pose.y: %.3f", global_pose.pose.position.y);
 

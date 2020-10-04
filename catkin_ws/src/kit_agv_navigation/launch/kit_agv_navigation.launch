@@ -17,38 +17,14 @@
   <arg name="sensor_ip_front"     default="192.168.1.23" />
   <arg name="sensor_ip_back"      default="192.168.1.22" />  
   <arg name="host_ip"             default="192.168.1.255"/>
-  <arg name="host_udp_port_front" default="6070" />
-  <arg name="host_udp_port_back"  default="6061" />
+  <arg name="host_udp_port_front" default="6061" />
+  <arg name="host_udp_port_back"  default="6060" />
   <arg name="angle_start_front"   default="-1.57" />
   <arg name="angle_end_front"     default="1.57" />
   <arg name="angle_start_back"    default="-1.57" />
   <arg name="angle_end_back"      default="1.57" />
   <arg name="frame_id_front"      default="base_laser_front"/>
   <arg name="frame_id_back"       default="base_laser_back"/>
-
-
-  <arg name="frame_merger"     default="base_laser" />
-  <arg name="merged_cloud"     default="/merged_cloud" />
-  <arg name="merged_topic"     default="/sick_safetyscanners/scan_multi" />
-  <arg name="laserscan_topics" default="/sick_safetyscanners_front/scan /sick_safetyscanners_back/scan" />  <!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
-  <arg name="angle_min"        default="-3.14"/>
-  <arg name="angle_max"        default="3.14"/>
-  <arg name="angle_increment"  default="0.0058"/>
-  <arg name="scan_time"        default="0.0333333"/>
-  <arg name="range_min"        default="0.1"/>
-  <arg name="range_max"        default="30"/>
-
-  <arg name="sim1000_ip" default="192.168.1.1"/>
-  
-  <arg name="map_file" default="$(find kit_agv_navigation)/maps/map709_SIM.yaml"/>
-  <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find kit_agv_description)/urdf/kit_agv.urdf.xacro'" />
-  
-  <arg name="open_rviz" default="true"/>
-  <!-- <arg name="open_rviz" default="false"/> -->
-
-  <arg name="move_forward_only" default="false"/>
-  
-  <arg name="port" default="/dev/ttyUSB0"/>
 
   <!-- MicroScan3 - sick_safetyscans -->
   <include file="$(find sick_safetyscanners)/launch/sick_safetyscanners.launch">
@@ -65,18 +41,20 @@
     <arg name="angle_end_back"      value="$(arg angle_end_back)"/>
   </include>
 
+  <!-- Robot description -->
+  <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find kit_agv_description)/urdf/kit_agv.urdf.xacro'" />
   <include file="$(find kit_agv_bringup)/launch/kit_agv_remote.launch">
      <arg name="urdf_file" value="$(arg urdf_file)" />
   </include>
   
   <!-- Map server -->
+  <arg name="map_file" default="$(find kit_agv_navigation)/maps/map709_SIM.yaml"/>
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 
 
   <!-- AMCL -->
-  <arg name="scan_topic"     default="/sick_safetyscanners/scan_multi"/>
-  <!-- <arg name="scan_topic"     default="/sick_safetyscanners_front/scan"/> -->
-  <!-- <arg name="scan_topic"     default="/sick_safetyscanners_back/scan"/> -->
+  <!-- <arg name="scan_topic"     default="/sick_safetyscanners/scan_multi"/> -->
+  <arg name="scan_topic"     default="/sick_safetyscanners_front/scan"/>
   <arg name="initial_pose_x" default="0.0"/>
   <arg name="initial_pose_y" default="0.0"/>
   <arg name="initial_pose_a" default="0.0"/>
@@ -88,32 +66,47 @@
   </include>
 
   <!-- sick_lidar_localization -->
-  <!-- <include file="$(find sick_lidar_localization)/launch/sim_loc_driver.launch">
+  <!-- <arg name="sim1000_ip" default="192.168.1.1"/>
+  <include file="$(find sick_lidar_localization)/launch/sim_loc_driver.launch">
     <arg name="localization_controller_ip_address" value="$(arg sim1000_ip)"/>
   </include> -->
 
   <!-- move_base -->
   <include file="$(find kit_agv_navigation)/launch/move_base.launch">
-    <arg name="move_forward_only" value="$(arg move_forward_only)"/>
+    <!-- <arg name="move_forward_only" value="$(arg move_forward_only)"/> -->
   </include>
 
   <!-- Laser Odom -->
-  <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="laser_scan_matcher_node" output="screen"/>
+  <!-- <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="laser_scan_matcher_node" output="screen"/> -->
 
   <node pkg="joint_state_publisher" type="joint_state_publisher" respawn="false" name="joint_state_publisher" output="screen"/>
 
   <!-- Motor Driver -->
+  <arg name="port" default="/dev/ttyUSB0"/>
   <include file="$(find r2serial_driver)/launch/r2serial_driver.launch">
     <arg name="port" value="$(arg port)"/>
   </include>
 
   <!-- rviz -->
+  <arg name="open_rviz" default="true"/>
+  <!-- <arg name="open_rviz" default="false"/> -->
   <group if="$(arg open_rviz)"> 
     <node pkg="rviz" type="rviz" name="rviz" required="true"
           args="-d $(find kit_agv_navigation)/rviz/kit_agv_navigation.rviz"/>
   </group>
 
-  <include file="$(find ira_laser_tools)/launch/laserscan_multi_merger.launch">
+  <!-- Merge 2 laserscan -->
+  <arg name="frame_merger"     default="base_laser" />
+  <arg name="merged_cloud"     default="/merged_cloud" />
+  <arg name="merged_topic"     default="/sick_safetyscanners/scan_multi" />
+  <arg name="laserscan_topics" default="/sick_safetyscanners_front/scan /sick_safetyscanners_back/scan" />  <!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
+  <arg name="angle_min"        default="-3.14"/>
+  <arg name="angle_max"        default="3.14"/>
+  <arg name="angle_increment"  default="0.0058"/>
+  <arg name="scan_time"        default="0.0333333"/>
+  <arg name="range_min"        default="0.1"/>
+  <arg name="range_max"        default="30"/>
+  <!-- <include file="$(find ira_laser_tools)/launch/laserscan_multi_merger.launch">
     <arg name="frame_merger"     value="$(arg frame_merger)"/>
     <arg name="merged_cloud"     value="$(arg merged_cloud)"/>
     <arg name="merged_topic"     value="$(arg merged_topic)"/>
@@ -124,6 +117,6 @@
     <arg name="scan_time"        value="$(arg scan_time)"/>
     <arg name="range_min"        value="$(arg range_min)"/>
     <arg name="range_max"        value="$(arg range_max)"/>
-  </include>
+  </include> -->
   
 </launch>
