@@ -867,7 +867,7 @@ namespace move_base {
 
   // Add by TungNV   ////////////////////////////////////////////////////////////////////////////////////////////////////
   void MoveBase::getCurrentPose(const sick_lidar_localization::SickLocResultPortTelegramMsg::ConstPtr& msgPose){
-    ROS_INFO("move_base.cpp-856-getCurrentPose");
+    // ROS_INFO("move_base.cpp-856-getCurrentPose");
     robot_current_pose.header = msgPose->header;
     float x = msgPose->telegram_payload.PoseX;
     float y = msgPose->telegram_payload.PoseY;

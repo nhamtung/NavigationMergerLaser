@@ -184,10 +184,15 @@ void LaserScanMatcher::initParams()
   // 3) vel - [x, y, theta] from velocity predictor - see alpha-beta predictors - /vel topic
   // If more than one is enabled, priority is imu > odom > vel
 
-  if (!nh_private_.getParam ("use_imu", use_imu_))
+  if (!nh_private_.getParam ("use_imu", use_imu_)){
+    // use_imu_ = true;
+    use_imu_ = false;
+  }
     use_imu_ = true;
-  if (!nh_private_.getParam ("use_odom", use_odom_))
+  if (!nh_private_.getParam ("use_odom", use_odom_)){
     use_odom_ = true;
+    // use_odom_ = false;
+  }
   if (!nh_private_.getParam ("use_vel", use_vel_))
     use_vel_ = false;
 
