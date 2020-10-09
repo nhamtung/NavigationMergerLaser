@@ -76,6 +76,8 @@
 // For monitoring the estimator
 #include <diagnostic_updater/diagnostic_updater.h>
 
+#include "sick_lidar_localization/SickLocResultPortTelegramMsg.h"
+
 #define NEW_UNIFORM_SAMPLING 1
 
 using namespace amcl;
@@ -174,6 +176,14 @@ class AmclNode
     void initialPoseReceived(const geometry_msgs::PoseWithCovarianceStampedConstPtr& msg);
     void handleInitialPoseMessage(const geometry_msgs::PoseWithCovarianceStamped& msg);
     void mapReceived(const nav_msgs::OccupancyGridConstPtr& msg);
+
+    ///////// Add by TungNV
+    ros::Subscriber pose_;
+    geometry_msgs::PoseStamped robot_current_pose;
+    void getCurrentPose(const sick_lidar_localization::SickLocResultPortTelegramMsg::ConstPtr& msgPose);
+    double DegreeToRad (double angle);
+    geometry_msgs::Quaternion GetQuaternion(double yaw, double pitch, double roll);
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     void handleMapMessage(const nav_msgs::OccupancyGrid& msg);
     void freeMapDependentMemory();
@@ -306,9 +316,9 @@ void sigintHandler(int sig)
   ros::shutdown();
 }
 
-int
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
+  ROS_ERROR("amcl.cpp-322-main()");
   ros::init(argc, argv, "amcl");
   ros::NodeHandle nh;
 
@@ -355,6 +365,7 @@ AmclNode::AmclNode() :
         first_map_received_(false),
         first_reconfigure_call_(true)
 {
+  ROS_INFO("amcl.cpp-369-AmclNode()");
   boost::recursive_mutex::scoped_lock l(configuration_mutex_);
 
   // Grab params off the param server
@@ -487,9 +498,15 @@ AmclNode::AmclNode() :
                                                    this, _1));
   initial_pose_sub_ = nh_.subscribe("initialpose", 2, &AmclNode::initialPoseReceived, this);
 
+  /////////// Add by TungNV
+  //Subscribe the topic /sick_lidar_localization/driver/result_telegrams
+  pose_ = nh_.subscribe<sick_lidar_localization::SickLocResultPortTelegramMsg>("sick_lidar_localization/driver/result_telegrams", 1, boost::bind(&AmclNode::getCurrentPose, this, _1));
+  ROS_INFO("amcl.cpp-493-Subscriber topic: /sick_lidar_localization/driver/result_telegrams");
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
   if(use_map_topic_) {
     map_sub_ = nh_.subscribe("map", 1, &AmclNode::mapReceived, this);
-    ROS_INFO("Subscribed to map topic.");
+    ROS_INFO("amcl.cpp-510-Subscribed to map topic.");
   } else {
     requestMap();
   }
@@ -510,6 +527,7 @@ AmclNode::AmclNode() :
 
 void AmclNode::reconfigureCB(AMCLConfig &config, uint32_t level)
 {
+  ROS_INFO("amcl.cpp-529-reconfigureCB()");
   boost::recursive_mutex::scoped_lock cfl(configuration_mutex_);
 
   //we don't want to do anything on the first call
@@ -573,7 +591,7 @@ void AmclNode::reconfigureCB(AMCLConfig &config, uint32_t level)
 
   if(config.min_particles > config.max_particles)
   {
-    ROS_WARN("You've set min_particles to be greater than max particles, this isn't allowed so they'll be set to be equal.");
+    ROS_WARN("amcl.cpp-594-You've set min_particles to be greater than max particles, this isn't allowed so they'll be set to be equal.");
     config.max_particles = config.min_particles;
   }
 
@@ -633,18 +651,18 @@ void AmclNode::reconfigureCB(AMCLConfig &config, uint32_t level)
     laser_->SetModelBeam(z_hit_, z_short_, z_max_, z_rand_,
                          sigma_hit_, lambda_short_, 0.0);
   else if(laser_model_type_ == LASER_MODEL_LIKELIHOOD_FIELD_PROB){
-    ROS_INFO("Initializing likelihood field model; this can take some time on large maps...");
+    ROS_INFO("amcl.cpp-654-Initializing likelihood field model; this can take some time on large maps...");
     laser_->SetModelLikelihoodFieldProb(z_hit_, z_rand_, sigma_hit_,
 					laser_likelihood_max_dist_, 
 					do_beamskip_, beam_skip_distance_, 
 					beam_skip_threshold_, beam_skip_error_threshold_);
-    ROS_INFO("Done initializing likelihood field model with probabilities.");
+    ROS_INFO("amcl.cpp-659-Done initializing likelihood field model with probabilities.");
   }
   else if(laser_model_type_ == LASER_MODEL_LIKELIHOOD_FIELD){
-    ROS_INFO("Initializing likelihood field model; this can take some time on large maps...");
+    ROS_INFO("amcl.cpp-662-Initializing likelihood field model; this can take some time on large maps...");
     laser_->SetModelLikelihoodField(z_hit_, z_rand_, sigma_hit_,
                                     laser_likelihood_max_dist_);
-    ROS_INFO("Done initializing likelihood field model.");
+    ROS_INFO("amcl.cpp-665-Done initializing likelihood field model.");
   }
 
   odom_frame_id_ = stripSlash(config.odom_frame_id);
@@ -663,7 +681,6 @@ void AmclNode::reconfigureCB(AMCLConfig &config, uint32_t level)
 
   initial_pose_sub_ = nh_.subscribe("initialpose", 2, &AmclNode::initialPoseReceived, this);
 }
-
 
 void AmclNode::runFromBag(const std::string &in_bag_fn, bool trigger_global_localization)
 {
@@ -757,7 +774,6 @@ void AmclNode::runFromBag(const std::string &in_bag_fn, bool trigger_global_loca
   ros::shutdown();
 }
 
-
 void AmclNode::savePoseToServer()
 {
   // We need to apply the last transform to the latest odom pose to get
@@ -824,8 +840,7 @@ void AmclNode::updatePoseFromServer()
     ROS_WARN("ignoring NAN in initial covariance AA");	
 }
 
-void 
-AmclNode::checkLaserReceived(const ros::TimerEvent& event)
+void AmclNode::checkLaserReceived(const ros::TimerEvent& event)
 {
   ros::Duration d = ros::Time::now() - last_laser_received_ts_;
   if(d > laser_check_interval_)
@@ -836,8 +851,7 @@ AmclNode::checkLaserReceived(const ros::TimerEvent& event)
   }
 }
 
-void
-AmclNode::requestMap()
+void AmclNode::requestMap()
 {
   boost::recursive_mutex::scoped_lock ml(configuration_mutex_);
 
@@ -847,16 +861,16 @@ AmclNode::requestMap()
   ROS_INFO("amcl_node.cpp-847-Requesting the map...");
   while(!ros::service::call("static_map", req, resp))
   {
-    ROS_WARN("Request for map failed; trying again...");
+    ROS_WARN("amcl_node.cpp-869-Request for map failed; trying again...");
     ros::Duration d(0.5);
     d.sleep();
   }
   handleMapMessage( resp.map );
 }
 
-void
-AmclNode::mapReceived(const nav_msgs::OccupancyGridConstPtr& msg)
+void AmclNode::mapReceived(const nav_msgs::OccupancyGridConstPtr& msg)
 {
+  ROS_INFO("amcl.cpp-879-mapReceived()");
   if( first_map_only_ && first_map_received_ ) {
     return;
   }
@@ -866,8 +880,7 @@ AmclNode::mapReceived(const nav_msgs::OccupancyGridConstPtr& msg)
   first_map_received_ = true;
 }
 
-void
-AmclNode::handleMapMessage(const nav_msgs::OccupancyGrid& msg)
+void AmclNode::handleMapMessage(const nav_msgs::OccupancyGrid& msg)
 {
   boost::recursive_mutex::scoped_lock cfl(configuration_mutex_);
 
@@ -955,8 +968,7 @@ AmclNode::handleMapMessage(const nav_msgs::OccupancyGrid& msg)
 
 }
 
-void
-AmclNode::freeMapDependentMemory()
+void AmclNode::freeMapDependentMemory()
 {
   if( map_ != NULL ) {
     map_free( map_ );
@@ -976,8 +988,7 @@ AmclNode::freeMapDependentMemory()
  * Convert an OccupancyGrid map message into the internal
  * representation.  This allocates a map_t and returns it.
  */
-map_t*
-AmclNode::convertMap( const nav_msgs::OccupancyGrid& map_msg )
+map_t* AmclNode::convertMap( const nav_msgs::OccupancyGrid& map_msg )
 {
   map_t* map = map_alloc();
   ROS_ASSERT(map);
@@ -1012,10 +1023,7 @@ AmclNode::~AmclNode()
   // TODO: delete everything allocated in constructor
 }
 
-bool
-AmclNode::getOdomPose(geometry_msgs::PoseStamped& odom_pose,
-                      double& x, double& y, double& yaw,
-                      const ros::Time& t, const std::string& f)
+bool AmclNode::getOdomPose(geometry_msgs::PoseStamped& odom_pose, double& x, double& y, double& yaw, const ros::Time& t, const std::string& f)
 {
   // Get the robot's pose
   geometry_msgs::PoseStamped ident;
@@ -1028,7 +1036,7 @@ AmclNode::getOdomPose(geometry_msgs::PoseStamped& odom_pose,
   }
   catch(tf2::TransformException e)
   {
-    ROS_WARN("Failed to compute odom pose, skipping scan (%s)", e.what());
+    ROS_WARN("amcl_node.cpp-1051-Failed to compute odom pose, skipping scan (%s)", e.what());
     return false;
   }
   x = odom_pose.pose.position.x;
@@ -1038,9 +1046,7 @@ AmclNode::getOdomPose(geometry_msgs::PoseStamped& odom_pose,
   return true;
 }
 
-
-pf_vector_t
-AmclNode::uniformPoseGenerator(void* arg)
+pf_vector_t AmclNode::uniformPoseGenerator(void* arg)
 {
   map_t* map = (map_t*)arg;
 #if NEW_UNIFORM_SAMPLING
@@ -1077,35 +1083,29 @@ AmclNode::uniformPoseGenerator(void* arg)
   return p;
 }
 
-bool
-AmclNode::globalLocalizationCallback(std_srvs::Empty::Request& req,
-                                     std_srvs::Empty::Response& res)
+bool AmclNode::globalLocalizationCallback(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res)
 {
   if( map_ == NULL ) {
     return true;
   }
   boost::recursive_mutex::scoped_lock gl(configuration_mutex_);
-  ROS_INFO("Initializing with uniform distribution");
+  ROS_INFO("amcl_node.cpp-1108-Initializing with uniform distribution");
   pf_init_model(pf_, (pf_init_model_fn_t)AmclNode::uniformPoseGenerator,
                 (void *)map_);
-  ROS_INFO("Global initialisation done!");
+  ROS_INFO("amcl_node.cpp-1111-Global initialisation done!");
   pf_init_ = false;
   return true;
 }
 
 // force nomotion updates (amcl updating without requiring motion)
-bool 
-AmclNode::nomotionUpdateCallback(std_srvs::Empty::Request& req,
-                                     std_srvs::Empty::Response& res)
+bool AmclNode::nomotionUpdateCallback(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res)
 {
 	m_force_update = true;
 	//ROS_INFO("Requesting no-motion update");
 	return true;
 }
 
-bool
-AmclNode::setMapCallback(nav_msgs::SetMap::Request& req,
-                         nav_msgs::SetMap::Response& res)
+bool AmclNode::setMapCallback(nav_msgs::SetMap::Request& req, nav_msgs::SetMap::Response& res)
 {
   handleMapMessage(req.map);
   handleInitialPoseMessage(req.initial_pose);
@@ -1113,8 +1113,7 @@ AmclNode::setMapCallback(nav_msgs::SetMap::Request& req,
   return true;
 }
 
-void
-AmclNode::laserReceived(const sensor_msgs::LaserScanConstPtr& laser_scan)
+void AmclNode::laserReceived(const sensor_msgs::LaserScanConstPtr& laser_scan)
 {
   std::string laser_scan_frame_id = stripSlash(laser_scan->header.frame_id);
   last_laser_received_ts_ = ros::Time::now();
@@ -1144,7 +1143,7 @@ AmclNode::laserReceived(const sensor_msgs::LaserScanConstPtr& laser_scan)
     }
     catch(tf2::TransformException& e)
     {
-      ROS_ERROR("Couldn't transform from %s to %s, "
+      ROS_ERROR("amcl_node.cpp-1166-Couldn't transform from %s to %s, "
                 "even though the message notifier is in use",
                 laser_scan_frame_id.c_str(),
                 base_frame_id_.c_str());
@@ -1173,7 +1172,7 @@ AmclNode::laserReceived(const sensor_msgs::LaserScanConstPtr& laser_scan)
   if(!getOdomPose(latest_odom_pose_, pose.v[0], pose.v[1], pose.v[2],
                   laser_scan->header.stamp, base_frame_id_))
   {
-    ROS_ERROR("Couldn't determine robot's pose associated with laser scan");
+    ROS_ERROR("amcl_node.cpp-1196-Couldn't determine robot's pose associated with laser scan");
     return;
   }
 
@@ -1508,25 +1507,72 @@ AmclNode::laserReceived(const sensor_msgs::LaserScanConstPtr& laser_scan)
   diagnosic_updater_.update();
 }
 
-void
-AmclNode::initialPoseReceived(const geometry_msgs::PoseWithCovarianceStampedConstPtr& msg)
+void AmclNode::initialPoseReceived(const geometry_msgs::PoseWithCovarianceStampedConstPtr& msg)
 {
+  ROS_INFO("amcl.cpp-1532-initialPoseReceived()");
   handleInitialPoseMessage(*msg);
 }
 
-void
-AmclNode::handleInitialPoseMessage(const geometry_msgs::PoseWithCovarianceStamped& msg)
+/////Add by TungNV
+void AmclNode::getCurrentPose(const sick_lidar_localization::SickLocResultPortTelegramMsg::ConstPtr& msgPose){
+  ROS_INFO("amcl.cpp-1538-getCurrentPose");
+  robot_current_pose.header = msgPose->header;
+  float x = msgPose->telegram_payload.PoseX;
+  float y = msgPose->telegram_payload.PoseY;
+  float yaw = msgPose->telegram_payload.PoseYaw;
+  robot_current_pose.pose.position.x = x/1000;
+  robot_current_pose.pose.position.y = y/1000;
+  double radYaw = DegreeToRad(yaw/1000);
+  robot_current_pose.pose.orientation = GetQuaternion(radYaw, 0, 0);
+
+  ROS_INFO("amcl.cpp-1548-robot_pose.x: %.3f", x);
+  ROS_INFO("amcl.cpp-1549-robot_pose.y: %.3f", y);
+  ROS_INFO("amcl.cpp-1550-robot_orientation: %.3f", yaw);
+}
+double AmclNode::DegreeToRad (double angle){
+  return (M_PI*angle)/180;
+}
+geometry_msgs::Quaternion AmclNode::GetQuaternion(double yaw, double pitch, double roll) // yaw (Z), pitch (Y), roll (X)
+  {
+    ROS_INFO("amcl.cpp-1557-GetQuaternion()");
+    // Abbreviations for the various angular functions
+    double cy = cos(yaw * 0.5);
+    double sy = sin(yaw * 0.5);
+    double cp = cos(pitch * 0.5);
+    double sp = sin(pitch * 0.5);
+    double cr = cos(roll * 0.5);
+    double sr = sin(roll * 0.5);
+
+    geometry_msgs::Quaternion q;
+    q.w = cr * cp * cy + sr * sp * sy;
+    q.x = sr * cp * cy - cr * sp * sy;
+    q.y = cr * sp * cy + sr * cp * sy;
+    q.z = cr * cp * sy - sr * sp * cy;
+
+    return q;
+  }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AmclNode::handleInitialPoseMessage(const geometry_msgs::PoseWithCovarianceStamped& msg)
 {
+  ROS_INFO("amcl.cpp-1521-handleInitialPoseMessage()");
+  geometry_msgs::PoseWithCovarianceStamped robot_pose = msg;
+
+  ROS_INFO("amcl.cpp-1575-robot_current_pose.x: %.3f", robot_current_pose.pose.position.x);
+  ROS_INFO("amcl.cpp-1576-robot_current_pose.y: %.3f", robot_current_pose.pose.position.y);
+  ROS_INFO("amcl.cpp-1580-robot_pose.x: %f", robot_pose.pose.pose.position.x);
+  ROS_INFO("amcl.cpp-1580-robot_pose.y: %f", robot_pose.pose.pose.position.y);
+
   boost::recursive_mutex::scoped_lock prl(configuration_mutex_);
   if(msg.header.frame_id == "")
   {
     // This should be removed at some point
-    ROS_WARN("Received initial pose with empty frame_id.  You should always supply a frame_id.");
+    ROS_WARN("amcl.cpp-1590-Received initial pose with empty frame_id.  You should always supply a frame_id.");
   }
   // We only accept initial pose estimates in the global frame, #5148.
   else if(stripSlash(msg.header.frame_id) != global_frame_id_)
   {
-    ROS_WARN("Ignoring initial pose in frame \"%s\"; initial poses must be in the global frame, \"%s\"",
+    ROS_WARN("amcl.cpp-1595-Ignoring initial pose in frame \"%s\"; initial poses must be in the global frame, \"%s\"",
              stripSlash(msg.header.frame_id).c_str(),
              global_frame_id_.c_str());
     return;
@@ -1550,10 +1596,12 @@ AmclNode::handleInitialPoseMessage(const geometry_msgs::PoseWithCovarianceStampe
     // transformation for on-the-move pose-setting, so ignoring this
     // startup condition doesn't really cost us anything.
     if(sent_first_transform_)
-      ROS_WARN("Failed to transform initial pose in time (%s)", e.what());
+      ROS_ERROR("amcl.cpp-1619-Failed to transform initial pose in time (%s)", e.what());
     tf2::convert(tf2::Transform::getIdentity(), tx_odom.transform);
   }
 
+  robot_current_pose;
+  
   tf2::Transform tx_odom_tf2;
   tf2::convert(tx_odom.transform, tx_odom_tf2);
   tf2::Transform pose_old, pose_new;
@@ -1562,7 +1610,7 @@ AmclNode::handleInitialPoseMessage(const geometry_msgs::PoseWithCovarianceStampe
 
   // Transform into the global frame
 
-  ROS_INFO("Setting pose (%.6f): %.3f %.3f %.3f",
+  ROS_INFO("amcl.cpp-1633-Setting pose (%.6f): %.3f %.3f %.3f",
            ros::Time::now().toSec(),
            pose_new.getOrigin().x(),
            pose_new.getOrigin().y(),
@@ -1595,8 +1643,7 @@ AmclNode::handleInitialPoseMessage(const geometry_msgs::PoseWithCovarianceStampe
  * pose to the particle filter state.  initial_pose_hyp_ is deleted
  * and set to NULL after it is used.
  */
-void
-AmclNode::applyInitialPose()
+void AmclNode::applyInitialPose()
 {
   boost::recursive_mutex::scoped_lock cfl(configuration_mutex_);
   if( initial_pose_hyp_ != NULL && map_ != NULL ) {
@@ -1608,8 +1655,7 @@ AmclNode::applyInitialPose()
   }
 }
 
-void
-AmclNode::standardDeviationDiagnostics(diagnostic_updater::DiagnosticStatusWrapper& diagnostic_status)
+void AmclNode::standardDeviationDiagnostics(diagnostic_updater::DiagnosticStatusWrapper& diagnostic_status)
 {
   double std_x = sqrt(last_published_pose.pose.covariance[6*0+0]);
   double std_y = sqrt(last_published_pose.pose.covariance[6*1+1]);

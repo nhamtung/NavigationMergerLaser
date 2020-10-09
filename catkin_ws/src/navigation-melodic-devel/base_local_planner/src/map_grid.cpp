@@ -55,6 +55,7 @@ namespace base_local_planner{
   }
 
   void MapGrid::commonInit(){
+    // ROS_INFO("map_grid.cpp-58-commonInit()");
     //don't allow construction of zero size grid
     ROS_ASSERT(size_y_ != 0 && size_x_ != 0);
 
@@ -82,6 +83,7 @@ namespace base_local_planner{
   }
 
   void MapGrid::sizeCheck(unsigned int size_x, unsigned int size_y){
+    // ROS_INFO("map_grid.cpp-86-sizeCheck()");
     if(map_.size() != size_x * size_y)
       map_.resize(size_x * size_y);
 
@@ -102,6 +104,7 @@ namespace base_local_planner{
 
   inline bool MapGrid::updatePathCell(MapCell* current_cell, MapCell* check_cell,
       const costmap_2d::Costmap2D& costmap){
+    // ROS_INFO("map_grid.cpp-107-updatePathCell()");
 
     //if the cell is an obstacle set the max path distance
     unsigned char cost = costmap.getCost(check_cell->cx, check_cell->cy);
@@ -123,6 +126,7 @@ namespace base_local_planner{
 
   //reset the path_dist and goal_dist fields for all cells
   void MapGrid::resetPathDist(){
+    ROS_INFO("map_grid.cpp-129-resetPathDist()");
     for(unsigned int i = 0; i < map_.size(); ++i) {
       map_[i].target_dist = unreachableCellCosts();
       map_[i].target_mark = false;
@@ -132,6 +136,7 @@ namespace base_local_planner{
 
   void MapGrid::adjustPlanResolution(const std::vector<geometry_msgs::PoseStamped>& global_plan_in,
       std::vector<geometry_msgs::PoseStamped>& global_plan_out, double resolution) {
+    // ROS_INFO("map_grid.cpp-139-adjustPlanResolution()");
     if (global_plan_in.size() == 0) {
       return;
     }
@@ -170,6 +175,7 @@ namespace base_local_planner{
   //update what map cells are considered path based on the global_plan
   void MapGrid::setTargetCells(const costmap_2d::Costmap2D& costmap,
       const std::vector<geometry_msgs::PoseStamped>& global_plan) {
+    ROS_INFO("map_grid.cpp-178-setTargetCells()");
     sizeCheck(costmap.getSizeInCellsX(), costmap.getSizeInCellsY());
 
     bool started_path = false;
@@ -187,18 +193,22 @@ namespace base_local_planner{
       double g_x = adjusted_global_plan[i].pose.position.x;
       double g_y = adjusted_global_plan[i].pose.position.y;
       unsigned int map_x, map_y;
+      ROS_INFO("map_grid.cpp-196-costmap.worldToMap(g_x, g_y, map_x, map_y): %f", costmap.worldToMap(g_x, g_y, map_x, map_y));
+      ROS_INFO("map_grid.cpp-197-costmap.getCost(map_x, map_y): %f", costmap.getCost(map_x, map_y));
       if (costmap.worldToMap(g_x, g_y, map_x, map_y) && costmap.getCost(map_x, map_y) != costmap_2d::NO_INFORMATION) {
+        ROS_INFO("map_grid.cpp-199-current");
         MapCell& current = getCell(map_x, map_y);
         current.target_dist = 0.0;
         current.target_mark = true;
         path_dist_queue.push(&current);
         started_path = true;
       } else if (started_path) {
+          ROS_INFO("map_grid.cpp-241-started_path = true");
           break;
       }
     }
     if (!started_path) {
-      ROS_ERROR("None of the %d first of %zu (%zu) points of the global plan were in the local costmap and free",
+      ROS_ERROR("map_grid.cpp-207-None of the %d first of %zu (%zu) points of the global plan were in the local costmap and free",
           i, adjusted_global_plan.size(), global_plan.size());
       return;
     }
@@ -209,6 +219,7 @@ namespace base_local_planner{
   //mark the point of the costmap as local goal where global_plan first leaves the area (or its last point)
   void MapGrid::setLocalGoal(const costmap_2d::Costmap2D& costmap,
       const std::vector<geometry_msgs::PoseStamped>& global_plan) {
+    ROS_INFO("map_grid.cpp-218-setLocalGoal()");
     sizeCheck(costmap.getSizeInCellsX(), costmap.getSizeInCellsY());
 
     int local_goal_x = -1;
@@ -226,15 +237,18 @@ namespace base_local_planner{
       if (costmap.worldToMap(g_x, g_y, map_x, map_y) && costmap.getCost(map_x, map_y) != costmap_2d::NO_INFORMATION) {
         local_goal_x = map_x;
         local_goal_y = map_y;
+        // ROS_INFO("map_grid.cpp-237-local_goal_x: %.3f", local_goal_x);
+        // ROS_INFO("map_grid.cpp-238-local_goal_y: %.3f", local_goal_y);
         started_path = true;
       } else {
         if (started_path) {
+          ROS_INFO("map_grid.cpp-241-started_path = true");
           break;
         }// else we might have a non pruned path, so we just continue
       }
     }
     if (!started_path) {
-      ROS_ERROR("None of the points of the global plan were in the local costmap, global plan points too far from robot");
+      ROS_ERROR("map_grid.cpp-247-None of the points of the global plan were in the local costmap, global plan points too far from robot");
       return;
     }
 
@@ -253,6 +267,7 @@ namespace base_local_planner{
 
 
   void MapGrid::computeTargetDistance(queue<MapCell*>& dist_queue, const costmap_2d::Costmap2D& costmap){
+    ROS_INFO("map_grid.cpp-263-computeTargetDistance()");
     MapCell* current_cell;
     MapCell* check_cell;
     unsigned int last_col = size_x_ - 1;

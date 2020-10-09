@@ -49,7 +49,7 @@
 
 
   
-  <link name="wheel_right_link">
+  <!-- <link name="wheel_right_link">
     <visual>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
       <geometry>
@@ -79,7 +79,7 @@
     <child link="wheel_left_link"/>
     <origin xyz="0.0 0.255 0.171" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-  </joint>
+  </joint> -->
 
   <link name="base_link">
     <visual>
@@ -95,6 +95,40 @@
     <child link="base_link"/>
     <origin xyz="0 0.0 0.075" rpy="0 0 0"/>
   </joint>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

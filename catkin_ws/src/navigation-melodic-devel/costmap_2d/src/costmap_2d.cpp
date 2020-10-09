@@ -191,6 +191,7 @@ unsigned char* Costmap2D::getCharMap() const
 
 unsigned char Costmap2D::getCost(unsigned int mx, unsigned int my) const
 {
+  // ROS_INFO("costmap_2d.cpp-194-getCost()");
   return costmap_[getIndex(mx, my)];
 }
 
@@ -207,6 +208,7 @@ void Costmap2D::mapToWorld(unsigned int mx, unsigned int my, double& wx, double&
 
 bool Costmap2D::worldToMap(double wx, double wy, unsigned int& mx, unsigned int& my) const
 {
+  // ROS_INFO("costmap_2d.cpp-211-worldToMap()");
   if (wx < origin_x_ || wy < origin_y_)
     return false;
 

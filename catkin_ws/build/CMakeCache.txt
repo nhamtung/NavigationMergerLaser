@@ -2154,5 +2154,5 @@ csm_csm_INCLUDEDIR:INTERNAL=
 csm_csm_LIBDIR:INTERNAL=
 csm_csm_PREFIX:INTERNAL=
 csm_csm_VERSION:INTERNAL=
-prefix_result:INTERNAL=/opt/ros/melodic/lib
+prefix_result:INTERNAL=/usr/lib
 

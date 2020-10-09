@@ -52,12 +52,13 @@ void LocalPlannerUtil::initialize(
     initialized_ = true;
   }
   else{
-    ROS_WARN("Planner utils have already been initialized, doing nothing.");
+    ROS_WARN("local_planner_util.cpp-55-Planner utils have already been initialized, doing nothing.");
   }
 }
 
 void LocalPlannerUtil::reconfigureCB(LocalPlannerLimits &config, bool restore_defaults)
-{
+{    
+  ROS_INFO("local_planner_util.cpp-61-reconfigureCB()");
   if(setup_ && restore_defaults) {
     config = default_limits_;
   }
@@ -82,6 +83,7 @@ LocalPlannerLimits LocalPlannerUtil::getCurrentLimits() {
 
 bool LocalPlannerUtil::getGoal(geometry_msgs::PoseStamped& goal_pose) {
   //we assume the global goal is the last point in the global plan
+  ROS_INFO("local_planner_util.cpp-86-getGoal()");
   return base_local_planner::getGoalPose(*tf_,
         global_plan_,
         global_frame_,
@@ -89,8 +91,9 @@ bool LocalPlannerUtil::getGoal(geometry_msgs::PoseStamped& goal_pose) {
 }
 
 bool LocalPlannerUtil::setPlan(const std::vector<geometry_msgs::PoseStamped>& orig_global_plan) {
+  ROS_INFO("local_planner_util.cpp-94-setPlan()");
   if(!initialized_){
-    ROS_ERROR("Planner utils have not been initialized, please call initialize() first");
+    ROS_ERROR("local_planner_util.cpp-96-Planner utils have not been initialized, please call initialize() first");
     return false;
   }
 
@@ -103,6 +106,9 @@ bool LocalPlannerUtil::setPlan(const std::vector<geometry_msgs::PoseStamped>& or
 }
 
 bool LocalPlannerUtil::getLocalPlan(const geometry_msgs::PoseStamped& global_pose, std::vector<geometry_msgs::PoseStamped>& transformed_plan) {
+  ROS_INFO("local_planner_util.cpp-109-getLocalPlan()");  
+  // ROS_INFO("local_planner_util.cpp-110-global_plan_: %s", global_plan_[0].header.frame_id.c_str());
+
   //get the global plan in our frame
   if(!base_local_planner::transformGlobalPlan(
       *tf_,

@@ -114,22 +114,18 @@ LaserScanMatcher::LaserScanMatcher(ros::NodeHandle nh, ros::NodeHandle nh_privat
 
   if (use_imu_)
   {
-    imu_subscriber_ = nh_.subscribe(
-      "imu/data", 1, &LaserScanMatcher::imuCallback, this);
+    imu_subscriber_ = nh_.subscribe("imu/data", 1, &LaserScanMatcher::imuCallback, this);
   }
   if (use_odom_)
   {
-    odom_subscriber_ = nh_.subscribe(
-      "odom", 1, &LaserScanMatcher::odomCallback, this);
+    odom_subscriber_ = nh_.subscribe("odom", 1, &LaserScanMatcher::odomCallback, this);
   }
   if (use_vel_)
   {
     if (stamped_vel_)
-      vel_subscriber_ = nh_.subscribe(
-        "vel", 1, &LaserScanMatcher::velStmpCallback, this);
+      vel_subscriber_ = nh_.subscribe("vel", 1, &LaserScanMatcher::velStmpCallback, this);
     else
-      vel_subscriber_ = nh_.subscribe(
-        "vel", 1, &LaserScanMatcher::velCallback, this);
+      vel_subscriber_ = nh_.subscribe("vel", 1, &LaserScanMatcher::velCallback, this);
   }
 }
 
@@ -190,8 +186,8 @@ void LaserScanMatcher::initParams()
   }
     use_imu_ = true;
   if (!nh_private_.getParam ("use_odom", use_odom_)){
-    use_odom_ = true;
-    // use_odom_ = false;
+    // use_odom_ = true;
+    use_odom_ = false;
   }
   if (!nh_private_.getParam ("use_vel", use_vel_))
     use_vel_ = false;

@@ -53,7 +53,7 @@ SickSafetyscannersRos::SickSafetyscannersRos()
   m_dynamic_reconfiguration_server.setCallback(reconf_callback);
   if (!readParameters())
   {
-    ROS_ERROR("Could not read parameters.");
+    ROS_ERROR("SickSafetyscannersRos.cpp-56-Could not read parameters.");
     ros::requestShutdown();
   }
   // tcp port can not be changed in the sensor configuration, therefore it is hardcoded
@@ -95,7 +95,7 @@ SickSafetyscannersRos::SickSafetyscannersRos()
 
 void SickSafetyscannersRos::readTypeCodeSettings()
 {
-  ROS_INFO("Reading Type code settings");
+  ROS_INFO("SickSafetyscannersRos.cpp-98-Reading Type code settings");
   sick::datastructure::TypeCode type_code;
   m_device->requestTypeCode(m_communication_settings, type_code);
   m_communication_settings.setEInterfaceType(type_code.getInterfaceType());
@@ -105,7 +105,7 @@ void SickSafetyscannersRos::readTypeCodeSettings()
 
 void SickSafetyscannersRos::readPersistentConfig()
 {
-  ROS_INFO("Reading Persistent Configuration");
+  ROS_INFO("SickSafetyscannersRos.cpp-108-Reading Persistent Configuration");
   sick::datastructure::ConfigData config_data;
   m_device->requestPersistentConfig(m_communication_settings, config_data);
   m_communication_settings.setStartAngle(config_data.getStartAngle());
@@ -158,7 +158,7 @@ bool SickSafetyscannersRos::readParameters()
   if (!m_private_nh.getParam("sensor_ip", sensor_ip_adress))
   {
     //    sensor_ip_adress = sick_safetyscanners::SickSafetyscannersConfiguration_sensor_ip;
-    ROS_WARN("Using default sensor IP: %s", sensor_ip_adress.c_str());
+    ROS_WARN("SickSafetyscannersRos.cpp-161-Using default sensor IP: %s", sensor_ip_adress.c_str());
   }
   m_communication_settings.setSensorIp(sensor_ip_adress);
 
@@ -166,18 +166,18 @@ bool SickSafetyscannersRos::readParameters()
   std::string host_ip_adress = "192.168.1.9";
   if (!m_private_nh.getParam("host_ip", host_ip_adress))
   {
-    ROS_WARN("Using default host IP: %s", host_ip_adress.c_str());
+    ROS_WARN("SickSafetyscannersRos.cpp-169-Using default host IP: %s", host_ip_adress.c_str());
   }
   m_communication_settings.setHostIp(host_ip_adress);
 
   int host_udp_port = 0;
   if (!m_private_nh.getParam("host_udp_port", host_udp_port))
   {
-    ROS_WARN("Using default host UDP Port: %i", host_udp_port);
+    ROS_WARN("SickSafetyscannersRos.cpp-176-Using default host UDP Port: %i", host_udp_port);
   }
   m_communication_settings.setHostUdpPort(host_udp_port);
 
-  ROS_WARN("If not further specified the default values for the dynamic reconfigurable parameters "
+  ROS_WARN("SickSafetyscannersRos.cpp-180-If not further specified the default values for the dynamic reconfigurable parameters "
            "will be loaded.");
 
 

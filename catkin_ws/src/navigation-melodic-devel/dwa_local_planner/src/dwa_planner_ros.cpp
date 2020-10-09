@@ -188,7 +188,7 @@ namespace dwa_local_planner {
     ROS_INFO("dwa_planner_ros.cpp-189-dwaComputeVelocityCommands");
     // dynamic window sampling approach to get useful velocity commands
     if(! isInitialized()){
-      ROS_ERROR("This planner has not been initialized, please call initialize() before using this planner");
+      ROS_ERROR("dwa_planner_ros.cpp-191-This planner has not been initialized, please call initialize() before using this planner");
       return false;
     }
 
@@ -225,15 +225,15 @@ namespace dwa_local_planner {
     //if we cannot move... tell someone
     std::vector<geometry_msgs::PoseStamped> local_plan;
     if(path.cost_ < 0) {
-      ROS_DEBUG_NAMED("dwa_local_planner",
-          "The dwa local planner failed to find a valid plan, cost functions discarded all candidates. This can mean there is an obstacle too close to the robot.");
+      ROS_DEBUG_NAMED("dwa_local_planner", "The dwa local planner failed to find a valid plan, cost functions discarded all candidates. This can mean there is an obstacle too close to the robot.");
+      ROS_ERROR("dwa_planner_ros.cpp-230-The dwa local planner failed to find a valid plan, cost functions discarded all candidates. This can mean there is an obstacle too close to the robot");
       local_plan.clear();
       publishLocalPlan(local_plan);
       return false;
     }
 
-    ROS_DEBUG_NAMED("dwa_local_planner", "A valid velocity command of (%.2f, %.2f, %.2f) was found for this cycle.", 
-                    cmd_vel.linear.x, cmd_vel.linear.y, cmd_vel.angular.z);
+    ROS_DEBUG_NAMED("dwa_local_planner", "A valid velocity command of (%.2f, %.2f, %.2f) was found for this cycle.", cmd_vel.linear.x, cmd_vel.linear.y, cmd_vel.angular.z);
+    ROS_INFO("dwa_planner_ros.cpp-236-A valid velocity command of (%.2f, %.2f, %.2f) was found for this cycle.", cmd_vel.linear.x, cmd_vel.linear.y, cmd_vel.angular.z);
 
     // Fill out the local plan
     for(unsigned int i = 0; i < path.getPointsSize(); ++i) {
@@ -304,7 +304,7 @@ namespace dwa_local_planner {
       if (isOk) {
         publishGlobalPlan(transformed_plan);
       } else {
-        ROS_WARN_NAMED("dwa_local_planner", "DWA planner failed to produce path.");
+        ROS_ERROR("dwa_planner_ros.cpp-307-DWA planner failed to produce path");
         std::vector<geometry_msgs::PoseStamped> empty_plan;
         publishGlobalPlan(empty_plan);
       }

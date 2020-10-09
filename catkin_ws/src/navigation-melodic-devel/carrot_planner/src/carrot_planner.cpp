@@ -128,9 +128,9 @@ namespace carrot_planner {
     double start_y = start.pose.position.y;
 
     double diff_x = goal_x - start_x;
-    ROS_INFO("carrot_planner.cpp-128-diff_x: %.3f (m)", diff_x);
+    // ROS_INFO("carrot_planner.cpp-128-diff_x: %.3f (m)", diff_x);
     double diff_y = goal_y - start_y;
-    ROS_INFO("carrot_planner.cpp-130-diff_y: %.3f (m)", diff_y);
+    // ROS_INFO("carrot_planner.cpp-130-diff_y: %.3f (m)", diff_y);
     double diff_yaw = angles::normalize_angle(goal_yaw-start_yaw);
     ROS_INFO("carrot_planner.cpp-132-diff_yaw: %.3f (rad)", diff_yaw);
 

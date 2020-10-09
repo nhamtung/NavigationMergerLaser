@@ -2,6 +2,7 @@
 <launch>
   <!-- Arguments -->
 
+  <!-- MicroScan3 - sick_safetyscans -->
   <!-- <arg name="sensor_ip_front"     default="192.168.1.12"/>
   <arg name="sensor_ip_back"      default="192.168.1.13"/>
   <arg name="host_ip"             default="192.168.1.255"/>
@@ -26,7 +27,6 @@
   <arg name="frame_id_front"      default="base_laser_front"/>
   <arg name="frame_id_back"       default="base_laser_back"/>
 
-  <!-- MicroScan3 - sick_safetyscans -->
   <include file="$(find sick_safetyscanners)/launch/sick_safetyscanners.launch">
     <arg name="sensor_ip_front"     value="$(arg sensor_ip_front)"/>
     <arg name="sensor_ip_back"      value="$(arg sensor_ip_back)"/>
@@ -66,7 +66,7 @@
   </include>
 
   <!-- sick_lidar_localization -->
-  <arg name="sim1000_ip" default="192.168.1.1"/>
+  <!-- <arg name="sim1000_ip" default="192.168.1.1"/> -->
   <!-- <include file="$(find sick_lidar_localization)/launch/sim_loc_driver.launch">
     <arg name="localization_controller_ip_address" value="$(arg sim1000_ip)"/>
   </include> -->
@@ -80,7 +80,12 @@
   <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="laser_scan_matcher_node" output="screen"/>
 
   <node pkg="joint_state_publisher" type="joint_state_publisher" respawn="false" name="joint_state_publisher" output="screen"/>
-
+  
+  <!-- <node pkg="tf" type="static_transform_publisher" name="odom_base_footprint" args="0 0 0 0 0 0 0 odom base_footprint 100" /> -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_footprint_base_link" args="0 0 0.075 0 0 0 0 base_footprint base_link 100" /> -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_link_base_laser" args="0 0 0.66775 0 0 0 0 base_link base_laser 100" /> -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_laser_base_laser_front" args="0.399099 -0.21965 0 0 0 0 0 base_laser base_laser_front 100" /> -->
+ 
   <!-- Motor Driver -->
   <arg name="port" default="/dev/ttyUSB0"/>
   <include file="$(find r2serial_driver)/launch/r2serial_driver.launch">
