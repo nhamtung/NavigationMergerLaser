@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/modbus_libraries/mbrtu/include/mbrtu/modbusrtu.h
+iostream
+-
+stdio.h
+-
+string.h
+-
+unistd.h
+-
+fcntl.h
+-
+errno.h
+-
+termios.h
+-
+time.h
+-
+cstdint
+-
+
+/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/modbus_libraries/mbrtu/src/mbrtu/modbusrtu.cpp
+mbrtu/modbusrtu.h
+/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/modbus_libraries/mbrtu/src/mbrtu/mbrtu/modbusrtu.h
+

@@ -318,7 +318,7 @@ void sigintHandler(int sig)
 
 int main(int argc, char** argv)
 {
-  ROS_ERROR("amcl.cpp-322-main()");
+  ROS_INFO("amcl.cpp-322-main()");
   ros::init(argc, argv, "amcl");
   ros::NodeHandle nh;
 

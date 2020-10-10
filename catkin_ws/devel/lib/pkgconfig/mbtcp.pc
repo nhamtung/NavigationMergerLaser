@@ -1,0 +1,8 @@
+prefix=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel
+
+Name: mbtcp
+Description: Description of mbtcp
+Version: 0.0.0
+Cflags: -I/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/modbus_libraries/mbtcp/include
+Libs: -L${prefix}/lib -lmbtcp
+Requires: roscpp

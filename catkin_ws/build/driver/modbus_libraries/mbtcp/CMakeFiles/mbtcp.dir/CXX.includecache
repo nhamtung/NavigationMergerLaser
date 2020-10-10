@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/modbus_libraries/mbtcp/include/mbtcp/modbus.h
+cstring
+-
+iostream
+-
+sys/socket.h
+-
+netinet/in.h
+-
+arpa/inet.h
+-
+unistd.h
+-
+
+/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/modbus_libraries/mbtcp/src/mbtcp/modbus.cpp
+mbtcp/modbus.h
+/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/modbus_libraries/mbtcp/src/mbtcp/mbtcp/modbus.h
+

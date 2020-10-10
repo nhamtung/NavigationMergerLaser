@@ -1,0 +1,8 @@
+prefix=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel
+
+Name: blvd20km_lib
+Description: Description of blvd20km_lib
+Version: 0.0.0
+Cflags: -I/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/blvdmotor_project/blvd20km_lib/include
+Libs: -L${prefix}/lib -lblvd20km_lib
+Requires: roscpp

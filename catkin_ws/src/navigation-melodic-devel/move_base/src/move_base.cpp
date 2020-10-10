@@ -80,10 +80,6 @@ namespace move_base {
     current_pose_pub_ = n.advertise<geometry_msgs::PoseStamped>("current_pose", 0);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // ros::service::call("{posex: 10300, posey: -5200, yaw: 30000, uncertainty: 1000}");
-    // ROS_INFO("move_base.cpp-84-Call service: SickLocSetPose");
-    // rosservice call SickLocSetPose "{posex: 10300, posey: -5200, yaw: 30000, uncertainty: 1000}"
-
     ros::NodeHandle private_nh("~");
     ros::NodeHandle nh;
     
@@ -633,9 +629,9 @@ namespace move_base {
         //if we should not be running the planner then suspend this thread
         ROS_DEBUG_NAMED("move_base_plan_thread","Planner thread is suspending");
         // ROS_WARN("move_base.cpp-624-Planner thread is suspending");
-        // if(wait_for_wake){
-        //   ROS_WARN("move_base.cpp-625-wait_for_wake = true");
-        // }
+        if(wait_for_wake){
+          // ROS_WARN("move_base.cpp-625-wait_for_wake = true");
+        }
         if(!runPlanner_){
           // ROS_WARN("move_base.cpp-628-runPlanner_ = false");
         }
@@ -882,9 +878,9 @@ namespace move_base {
     robot_current_pose.pose.orientation = GetQuaternion(radYaw, 0, 0);
 
     current_pose_pub_.publish(robot_current_pose);  
-    // ROS_INFO("move_base.cpp-861-robot_pose.x: %.3f", x);
-    // ROS_INFO("move_base.cpp-862-robot_pose.y: %.3f", y);
-    // ROS_INFO("move_base.cpp-862-robot_orientation: %.3f", yaw);
+    // ROS_INFO("move_base.cpp-861-robot_pose.x: %.3f", msgPose->telegram_payload.PoseX);
+    // ROS_INFO("move_base.cpp-862-robot_pose.y: %.3f", msgPose->telegram_payload.PoseY);
+    // ROS_INFO("move_base.cpp-862-robot_orientation: %.3f", msgPose->telegram_payload.PoseYaw);
   }
   void MoveBase::getMode(const std_msgs::Int32::ConstPtr& msgMode){
     ROS_INFO("move_base.cpp-851-getMode()");
@@ -956,7 +952,7 @@ namespace move_base {
     }
     if(isRotate == false){
       ROS_INFO("move_base.cpp-911-goal.x=%.2f, goal.y=%.2f, goal.z=%.2f, goal.w=%.2f", goal.pose.position.x, goal.pose.position.y, goal.pose.orientation.z, goal.pose.orientation.w);
-      // execute(goal);  //move to goal
+      execute(goal);  //move to goal
     }
 
     return;
@@ -1161,6 +1157,9 @@ namespace move_base {
             listActionGoal.erase(listActionGoal.begin(), ++listActionGoal.begin());
             ROS_INFO("move_base.cpp-1114- Erase action_goal");
           }
+          else{
+            publishZeroVelocity();
+          }
         }
         return true;
       }
@@ -1217,7 +1216,7 @@ namespace move_base {
     //check to see if we've moved far enough to reset our oscillation timeout
     if(distance(current_position, oscillation_pose_) >= oscillation_distance_)
     {
-      ROS_WARN("move_base.cpp-1206-distance = %f > oscillation_distance_ = %f", distance(current_position, oscillation_pose_), oscillation_distance_);
+      ROS_ERROR("move_base.cpp-1206-distance = %f > oscillation_distance_ = %f", distance(current_position, oscillation_pose_), oscillation_distance_);
       last_oscillation_reset_ = ros::Time::now();
       oscillation_pose_ = current_position;
 
@@ -1319,7 +1318,7 @@ namespace move_base {
 
         if(tc_->computeVelocityCommands(cmd_vel)){
           ROS_DEBUG_NAMED( "move_base", "Got a valid command from the local planner:  %.3lf, %.3lf, %.3lf", cmd_vel.linear.x, cmd_vel.linear.y, cmd_vel.angular.z);
-          ROS_INFO("move_base.cpp-1270-cmd_vel: %.3lf, %.3lf, %.3lf", cmd_vel.linear.x, cmd_vel.linear.y, cmd_vel.angular.z);
+          ROS_INFO("move_base.cpp-1270-cmd_vel: x=%.3lf, y=%.3lf, angle=%.3lf", cmd_vel.linear.x, cmd_vel.linear.y, cmd_vel.angular.z);
 
           last_valid_control_ = ros::Time::now();
           //make sure that we send the velocity command to the base
@@ -1568,53 +1567,50 @@ namespace move_base {
   bool MoveBase::getRobotPose(geometry_msgs::PoseStamped& global_pose, costmap_2d::Costmap2DROS* costmap)
   {
     ROS_INFO("move_base.cpp-1517-getRobotPose");
-    bool sim1000 = true;
-    // bool sim1000 = false;
-    if(sim1000){
-      global_pose = robot_current_pose;
-      // ROS_INFO("costmap_2d_ros.cpp-1575-global_pose.x: %.3f", global_pose.pose.position.x);
-      // ROS_INFO("costmap_2d_ros.cpp-1576-global_pose.y: %.3f", global_pose.pose.position.y);
-      // ROS_INFO("costmap_2d_ros.cpp-1577-global_pose.z: %.3f", global_pose.pose.orientation.z);
-      // ROS_INFO("costmap_2d_ros.cpp-1578-global_pose.w: %.3f", global_pose.pose.orientation.w);
-    }
-    else{
-      tf2::toMsg(tf2::Transform::getIdentity(), global_pose.pose);
-      geometry_msgs::PoseStamped robot_pose;
-      tf2::toMsg(tf2::Transform::getIdentity(), robot_pose.pose);
-      robot_pose.header.frame_id = robot_base_frame_;
-      robot_pose.header.stamp = ros::Time(); // latest available
-      ros::Time current_time = ros::Time::now();  // save time for checking tf delay later
+    // global_pose = robot_current_pose;
 
-      // get robot pose on the given costmap frame
-      try
-      {
-        tf_.transform(robot_pose, global_pose, costmap->getGlobalFrameID());
-      }
-      catch (tf2::LookupException& ex)
-      {
-        ROS_ERROR_THROTTLE(1.0, "No Transform available Error looking up robot pose: %s\n", ex.what());
-        return false;
-      }
-      catch (tf2::ConnectivityException& ex)
-      {
-        ROS_ERROR_THROTTLE(1.0, "Connectivity Error looking up robot pose: %s\n", ex.what());
-        return false;
-      }
-      catch (tf2::ExtrapolationException& ex)
-      {
-        ROS_ERROR_THROTTLE(1.0, "Extrapolation Error looking up robot pose: %s\n", ex.what());
-        return false;
-      }
+    tf2::toMsg(tf2::Transform::getIdentity(), global_pose.pose);
+    geometry_msgs::PoseStamped robot_pose;
+    tf2::toMsg(tf2::Transform::getIdentity(), robot_pose.pose);
+    robot_pose.header.frame_id = robot_base_frame_;
+    robot_pose.header.stamp = ros::Time(); // latest available
+    ros::Time current_time = ros::Time::now();  // save time for checking tf delay later
 
-      // check if global_pose time stamp is within costmap transform tolerance
-      if (current_time.toSec() - global_pose.header.stamp.toSec() > costmap->getTransformTolerance())
-      {
-        ROS_WARN_THROTTLE(1.0, "Transform timeout for %s. " \
-                          "Current time: %.4f, pose stamp: %.4f, tolerance: %.4f", costmap->getName().c_str(),
-                          current_time.toSec(), global_pose.header.stamp.toSec(), costmap->getTransformTolerance());
-        return false;
-      }
+    // get robot pose on the given costmap frame
+    try
+    {
+      tf_.transform(robot_pose, global_pose, costmap->getGlobalFrameID());
     }
+    catch (tf2::LookupException& ex)
+    {
+      ROS_ERROR_THROTTLE(1.0, "No Transform available Error looking up robot pose: %s\n", ex.what());
+      return false;
+    }
+    catch (tf2::ConnectivityException& ex)
+    {
+      ROS_ERROR_THROTTLE(1.0, "Connectivity Error looking up robot pose: %s\n", ex.what());
+      return false;
+    }
+    catch (tf2::ExtrapolationException& ex)
+    {
+      ROS_ERROR_THROTTLE(1.0, "Extrapolation Error looking up robot pose: %s\n", ex.what());
+      return false;
+    }
+
+    // check if global_pose time stamp is within costmap transform tolerance
+    if (current_time.toSec() - global_pose.header.stamp.toSec() > costmap->getTransformTolerance())
+    {
+      ROS_WARN_THROTTLE(1.0, "Transform timeout for %s. " \
+                        "Current time: %.4f, pose stamp: %.4f, tolerance: %.4f", costmap->getName().c_str(),
+                        current_time.toSec(), global_pose.header.stamp.toSec(), costmap->getTransformTolerance());
+      return false;
+    }
+
+    ROS_INFO("move_base.cpp-1609-current_pose.x: %.3f", global_pose.pose.position.x);
+    ROS_INFO("move_base.cpp-1610-current_pose.y: %.3f", global_pose.pose.position.y);
+    ROS_INFO("move_base.cpp-1611-current_pose.z: %.3f", global_pose.pose.orientation.z);
+    ROS_INFO("move_base.cpp-1612-current_pose.w: %.3f", global_pose.pose.orientation.w);
+
 
     return true;
   }

@@ -1,0 +1,8 @@
+prefix=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/install
+
+Name: mbrtu
+Description: Description of mbrtu
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lmbrtu
+Requires: roscpp

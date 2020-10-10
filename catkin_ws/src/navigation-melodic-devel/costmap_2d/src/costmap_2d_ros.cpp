@@ -642,8 +642,8 @@ double Costmap2DROS::DegreeToRad (double angle){
 bool Costmap2DROS::getRobotPose(geometry_msgs::PoseStamped& global_pose) const
 {
   // ROS_INFO("costmap_2d_ros.cpp-641-");
-  bool sim1000 = true;
-  // bool sim1000 = false;
+  // bool sim1000 = true;
+  bool sim1000 = false;
   if(sim1000){
     global_pose = robot_current_pose;
     // ROS_INFO("costmap_2d_ros.cpp-596-global_pose.x: %.3f", global_pose.pose.position.x);

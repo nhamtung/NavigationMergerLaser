@@ -117,6 +117,7 @@ sick_safetyscanners_node_EXTERNAL_OBJECTS =
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/sick_safetyscanners/sick_safetyscanners_node: sick_safetyscanners-master/CMakeFiles/sick_safetyscanners_node.dir/src/SickSafetyscannersRos.cpp.o
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/sick_safetyscanners/sick_safetyscanners_node: sick_safetyscanners-master/CMakeFiles/sick_safetyscanners_node.dir/build.make
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/sick_safetyscanners/sick_safetyscanners_node: /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libsick_safetyscanners_core.so
+/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/sick_safetyscanners/sick_safetyscanners_node: /opt/ros/melodic/lib/libdiagnostic_updater.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/sick_safetyscanners/sick_safetyscanners_node: /opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/sick_safetyscanners/sick_safetyscanners_node: /opt/ros/melodic/lib/libroscpp.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/sick_safetyscanners/sick_safetyscanners_node: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so

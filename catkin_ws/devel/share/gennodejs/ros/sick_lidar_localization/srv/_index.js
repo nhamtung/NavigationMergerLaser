@@ -1,36 +1,36 @@
 
 "use strict";
 
-let SickLocTimeSyncSrv = require('./SickLocTimeSyncSrv.js')
-let SickLocStopAndSaveSrv = require('./SickLocStopAndSaveSrv.js')
-let SickLocIsSystemReadySrv = require('./SickLocIsSystemReadySrv.js')
-let SickLocSetResultPoseEnabledSrv = require('./SickLocSetResultPoseEnabledSrv.js')
-let SickLocRequestTimestampSrv = require('./SickLocRequestTimestampSrv.js')
-let SickLocSetPoseSrv = require('./SickLocSetPoseSrv.js')
-let SickLocStopSrv = require('./SickLocStopSrv.js')
-let SickLocSetResultModeSrv = require('./SickLocSetResultModeSrv.js')
-let SickLocSetResultPortSrv = require('./SickLocSetResultPortSrv.js')
-let SickLocSetResultEndiannessSrv = require('./SickLocSetResultEndiannessSrv.js')
-let SickLocStartLocalizingSrv = require('./SickLocStartLocalizingSrv.js')
-let SickLocSetResultPoseIntervalSrv = require('./SickLocSetResultPoseIntervalSrv.js')
-let SickLocRequestResultDataSrv = require('./SickLocRequestResultDataSrv.js')
-let SickLocStateSrv = require('./SickLocStateSrv.js')
 let SickLocColaTelegramSrv = require('./SickLocColaTelegramSrv.js')
+let SickLocStartLocalizingSrv = require('./SickLocStartLocalizingSrv.js')
+let SickLocTimeSyncSrv = require('./SickLocTimeSyncSrv.js')
+let SickLocRequestResultDataSrv = require('./SickLocRequestResultDataSrv.js')
+let SickLocSetResultEndiannessSrv = require('./SickLocSetResultEndiannessSrv.js')
+let SickLocSetResultPortSrv = require('./SickLocSetResultPortSrv.js')
+let SickLocStateSrv = require('./SickLocStateSrv.js')
+let SickLocSetResultModeSrv = require('./SickLocSetResultModeSrv.js')
+let SickLocIsSystemReadySrv = require('./SickLocIsSystemReadySrv.js')
+let SickLocStopSrv = require('./SickLocStopSrv.js')
+let SickLocSetResultPoseEnabledSrv = require('./SickLocSetResultPoseEnabledSrv.js')
+let SickLocSetPoseSrv = require('./SickLocSetPoseSrv.js')
+let SickLocStopAndSaveSrv = require('./SickLocStopAndSaveSrv.js')
+let SickLocSetResultPoseIntervalSrv = require('./SickLocSetResultPoseIntervalSrv.js')
+let SickLocRequestTimestampSrv = require('./SickLocRequestTimestampSrv.js')
 
 module.exports = {
-  SickLocTimeSyncSrv: SickLocTimeSyncSrv,
-  SickLocStopAndSaveSrv: SickLocStopAndSaveSrv,
-  SickLocIsSystemReadySrv: SickLocIsSystemReadySrv,
-  SickLocSetResultPoseEnabledSrv: SickLocSetResultPoseEnabledSrv,
-  SickLocRequestTimestampSrv: SickLocRequestTimestampSrv,
-  SickLocSetPoseSrv: SickLocSetPoseSrv,
-  SickLocStopSrv: SickLocStopSrv,
-  SickLocSetResultModeSrv: SickLocSetResultModeSrv,
-  SickLocSetResultPortSrv: SickLocSetResultPortSrv,
-  SickLocSetResultEndiannessSrv: SickLocSetResultEndiannessSrv,
-  SickLocStartLocalizingSrv: SickLocStartLocalizingSrv,
-  SickLocSetResultPoseIntervalSrv: SickLocSetResultPoseIntervalSrv,
-  SickLocRequestResultDataSrv: SickLocRequestResultDataSrv,
-  SickLocStateSrv: SickLocStateSrv,
   SickLocColaTelegramSrv: SickLocColaTelegramSrv,
+  SickLocStartLocalizingSrv: SickLocStartLocalizingSrv,
+  SickLocTimeSyncSrv: SickLocTimeSyncSrv,
+  SickLocRequestResultDataSrv: SickLocRequestResultDataSrv,
+  SickLocSetResultEndiannessSrv: SickLocSetResultEndiannessSrv,
+  SickLocSetResultPortSrv: SickLocSetResultPortSrv,
+  SickLocStateSrv: SickLocStateSrv,
+  SickLocSetResultModeSrv: SickLocSetResultModeSrv,
+  SickLocIsSystemReadySrv: SickLocIsSystemReadySrv,
+  SickLocStopSrv: SickLocStopSrv,
+  SickLocSetResultPoseEnabledSrv: SickLocSetResultPoseEnabledSrv,
+  SickLocSetPoseSrv: SickLocSetPoseSrv,
+  SickLocStopAndSaveSrv: SickLocStopAndSaveSrv,
+  SickLocSetResultPoseIntervalSrv: SickLocSetResultPoseIntervalSrv,
+  SickLocRequestTimestampSrv: SickLocRequestTimestampSrv,
 };

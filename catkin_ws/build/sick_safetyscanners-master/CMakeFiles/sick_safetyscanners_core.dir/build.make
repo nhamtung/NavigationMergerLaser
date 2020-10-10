@@ -2430,6 +2430,7 @@ sick_safetyscanners_core_EXTERNAL_OBJECTS =
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libsick_safetyscanners_core.so: sick_safetyscanners-master/CMakeFiles/sick_safetyscanners_core.dir/src/datastructure/TypeCode.cpp.o
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libsick_safetyscanners_core.so: sick_safetyscanners-master/CMakeFiles/sick_safetyscanners_core.dir/src/datastructure/UserName.cpp.o
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libsick_safetyscanners_core.so: sick_safetyscanners-master/CMakeFiles/sick_safetyscanners_core.dir/build.make
+/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libsick_safetyscanners_core.so: /opt/ros/melodic/lib/libdiagnostic_updater.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libsick_safetyscanners_core.so: /opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libsick_safetyscanners_core.so: /opt/ros/melodic/lib/libroscpp.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libsick_safetyscanners_core.so: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so

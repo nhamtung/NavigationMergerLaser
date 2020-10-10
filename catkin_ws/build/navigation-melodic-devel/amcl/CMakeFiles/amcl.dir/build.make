@@ -93,6 +93,7 @@ amcl_EXTERNAL_OBJECTS =
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/amcl/amcl: /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libamcl_sensors.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/amcl/amcl: /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libamcl_map.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/amcl/amcl: /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/libamcl_pf.so
+/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/amcl/amcl: /opt/ros/melodic/lib/libdiagnostic_updater.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/amcl/amcl: /opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/amcl/amcl: /opt/ros/melodic/lib/librosbag.so
 /home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/lib/amcl/amcl: /opt/ros/melodic/lib/librosbag_storage.so

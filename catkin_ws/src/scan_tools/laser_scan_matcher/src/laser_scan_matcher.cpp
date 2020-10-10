@@ -108,9 +108,8 @@ LaserScanMatcher::LaserScanMatcher(ros::NodeHandle nh, ros::NodeHandle nh_privat
   //     "scan", 1, &LaserScanMatcher::scanCallback, this);
   // }
 
-  // scan_subscriber_ = nh_.subscribe("/sick_safetyscanners/scan_multi", 1, &LaserScanMatcher::scanCallback, this);
-  scan_subscriber_ = nh_.subscribe("/sick_safetyscanners_front/scan", 1, &LaserScanMatcher::scanCallback, this);
-  // scan_subscriber_ = nh_.subscribe("/sick_safetyscanners_back/scan", 1, &LaserScanMatcher::scanCallback, this);
+  scan_subscriber_ = nh_.subscribe("/sick_safetyscanners/scan_multi", 1, &LaserScanMatcher::scanCallback, this);
+  // scan_subscriber_ = nh_.subscribe("/sick_safetyscanners_front/scan", 1, &LaserScanMatcher::scanCallback, this);
 
   if (use_imu_)
   {

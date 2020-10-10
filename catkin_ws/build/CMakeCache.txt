@@ -752,6 +752,18 @@ base_local_planner_LIB_DEPENDS:STATIC=general;costmap_2d;general;layers;general;
 //Value Computed by CMake
 base_local_planner_SOURCE_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/navigation-melodic-devel/base_local_planner
 
+//Value Computed by CMake
+blvd20km_lib_BINARY_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/build/driver/blvdmotor_project/blvd20km_lib
+
+//The directory containing a CMake configuration file for blvd20km_lib.
+blvd20km_lib_DIR:PATH=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/share/blvd20km_lib/cmake
+
+//Dependencies for the target
+blvd20km_lib_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+blvd20km_lib_SOURCE_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/blvdmotor_project/blvd20km_lib
+
 //The directory containing a CMake configuration file for bond.
 bond_DIR:PATH=/opt/ros/melodic/share/bond/cmake
 
@@ -811,6 +823,12 @@ diagnostic_msgs_DIR:PATH=/opt/ros/melodic/share/diagnostic_msgs/cmake
 
 //The directory containing a CMake configuration file for diagnostic_updater.
 diagnostic_updater_DIR:PATH=/opt/ros/melodic/share/diagnostic_updater/cmake
+
+//Value Computed by CMake
+driver_blvd_controller_BINARY_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/build/driver/blvdmotor_project/driver_blvd_controller
+
+//Value Computed by CMake
+driver_blvd_controller_SOURCE_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/blvdmotor_project/driver_blvd_controller
 
 //Value Computed by CMake
 dwa_local_planner_BINARY_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/build/navigation-melodic-devel/dwa_local_planner
@@ -1037,6 +1055,27 @@ map_server_SOURCE_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_
 
 //Dependencies for the target
 map_server_image_loader_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libBulletDynamics.so;general;/usr/lib/x86_64-linux-gnu/libBulletCollision.so;general;/usr/lib/x86_64-linux-gnu/libLinearMath.so;general;/usr/lib/x86_64-linux-gnu/libBulletSoftBody.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;tf2;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;general;/usr/lib/x86_64-linux-gnu/libSDLmain.a;general;/usr/lib/x86_64-linux-gnu/libSDL.so;general;-lpthread;general;/usr/lib/x86_64-linux-gnu/libSDL_image.so;
+
+//Value Computed by CMake
+mbrtu_BINARY_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/build/driver/modbus_libraries/mbrtu
+
+//The directory containing a CMake configuration file for mbrtu.
+mbrtu_DIR:PATH=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/devel/share/mbrtu/cmake
+
+//Dependencies for the target
+mbrtu_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+mbrtu_SOURCE_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/modbus_libraries/mbrtu
+
+//Value Computed by CMake
+mbtcp_BINARY_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/build/driver/modbus_libraries/mbtcp
+
+//Dependencies for the target
+mbtcp_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+mbtcp_SOURCE_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/driver/modbus_libraries/mbtcp
 
 //The directory containing a CMake configuration file for message_filters.
 message_filters_DIR:PATH=/opt/ros/melodic/share/message_filters/cmake
@@ -1267,7 +1306,7 @@ sick_safetyscanners_BINARY_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLase
 sick_safetyscanners_SOURCE_DIR:STATIC=/home/robotics/TungNV/NavigationMergerLaser/catkin_ws/src/sick_safetyscanners-master
 
 //Dependencies for the target
-sick_safetyscanners_core_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+sick_safetyscanners_core_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libdiagnostic_updater.so;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
 
 //The directory containing a CMake configuration file for smclib.
 smclib_DIR:PATH=/opt/ros/melodic/share/smclib/cmake
@@ -1583,7 +1622,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=61
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=64
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
